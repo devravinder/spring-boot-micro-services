@@ -1,0 +1,53 @@
+version: '3'
+
+vars:
+
+  #  GOOS means Go OS
+  # here 'default' is a function...that checks if the variable value is passed ...else it uses the default value
+  # the default value is passed ...just after the 'default' function as arg
+  # in this case 'OS' is default value ( OS is special variable of Taskfile...that gives current os name )
+
+  # see 'sleep' task for one more example
+  GOOS: "{{default OS .GOOS}}"
+  GRADLEW: '{{if eq .GOOS "windows"}}gradlew.bat{{else}}./gradlew{{end}}'
+  DC_DIR: "deployment/docker-compose"
+  INFRA_DC_FILE: "{{.DC_DIR}}/infra.yml"
+
+tasks:
+  default:
+    cmds:
+      - task: test
+
+  test:
+    deps: [format]
+    cmds:
+      - "{{.GRADLEW}} clean test"
+
+  format:
+    cmds:
+      - "{{.GRADLEW}} spotlessApply"
+
+  build:
+    cmds:
+      - "{{.GRADLEW}} build"
+
+  start_infra:
+    cmds:
+      - docker compose -f "{{.INFRA_DC_FILE}}" up -d
+
+  stop_infra:
+    cmds:
+      - docker compose -f "{{.INFRA_DC_FILE}}" stop
+      - docker compose -f "{{.INFRA_DC_FILE}}" rm -f
+
+  restart_infra:
+    cmds:
+      - task: stop_infra
+      - task: sleep
+      - task: start_infra
+
+  sleep:
+    vars:
+      DURATION: '{{default 5 .DURATION}}'
+    cmds:
+      - sleep {{.DURATION}}

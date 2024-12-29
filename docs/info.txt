@@ -15,3 +15,11 @@
 
        - for a specific application
          $ ./gradlew :catalog-service:spotlessApply
+
+
+====================== TaskFile ===============================
+1. we are using TaskFile ( task ) to run the commands easily
+2. usage ( from root application )
+   $ task <task_name>
+   $ task test
+   $ task format
