@@ -1,0 +1,4 @@
+1. to run
+  $ docker compose -f infra.yaml up -d
+
+2. to stop

@@ -1,0 +1,17 @@
+
+================== Spotless ===================
+1. to check
+   - from root application
+       - for all applications
+         $ ./gradlew spotlessCheckAll
+
+       - for a specific application
+         $ ./gradlew :catalog-service:spotlessCheck
+
+2. to apply ( to fix )
+   - from root application
+       - for all applications
+         $ ./gradlew spotlessApplyAll
+
+       - for a specific application
+         $ ./gradlew :catalog-service:spotlessApply

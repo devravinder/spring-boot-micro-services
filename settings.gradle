@@ -1,0 +1,3 @@
+rootProject.name = 'spring-boot-micro-services'
+include 'catalog-service'
+
