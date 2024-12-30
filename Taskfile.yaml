@@ -11,7 +11,7 @@ vars:
   GOOS: "{{default OS .GOOS}}"
   GRADLEW: '{{if eq .GOOS "windows"}}gradlew.bat{{else}}./gradlew{{end}}'
   DC_DIR: "deployment/docker-compose"
-  INFRA_DC_FILE: "{{.DC_DIR}}/infra.yml"
+  INFRA_DC_FILE: "{{.DC_DIR}}/infra.yaml"
 
 tasks:
   default:
