@@ -23,3 +23,22 @@
    $ task <task_name>
    $ task test
    $ task format
+
+
+
+================= Build Docker Image ====================
+1. form the child module
+   $ ../gradlew bootBuildImage
+   $ ../gradlew bootBuildImage -x test    # skip tests
+   $ ../gradlew bootBuildImage -PBUILD_SOURCEVERSION=1.2.3  # to pass  build version
+
+       # here BUILD_SOURCEVERSION is a gradle property,
+       # we can access in gradle script like: project.property('BUILD_SOURCEVERSION')
+
+  combining all:
+
+   $ ../gradlew bootBuildImage -x test -PBUILD_SOURCEVERSION=1.0.0
+
+
+2. from root application
+   $ ./gradlew  :catalog-service:bootBuildImage -x test -PBUILD_SOURCEVERSION=1.0.0

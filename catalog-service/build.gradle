@@ -1,3 +1,28 @@
+
+// extra properties
+ext {
+    springdocOpenApiVersion = '2.7.0'
+    spotlessVersion = '2.43.0'
+    dockerImageName = "devravinder/bookstore-${project.name}:${project.version}"
+}
+bootBuildImage {
+    imageName = dockerImageName
+    //    builder = 'dashaun/builder:tiny'
+    //    builder = "paketobuildpacks/builder:base"      // Use Paketo base builder ( small base )
+
+    /*
+    // to publish to docker hub
+    docker {
+        publishRegistry {
+            username = project.findProperty("registryUsername")
+            password = project.findProperty("registryPassword")
+            url = project.findProperty("registryUrl")
+        }
+    }
+
+    */
+
+}
 dependencies {
 
     implementation 'org.mapstruct:mapstruct:1.6.3'

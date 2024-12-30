@@ -10,7 +10,12 @@ plugins {
 
 allprojects {
     group = 'com.paravar'
-    version = System.getenv('BUILD_SOURCEVERSION') ?: '0.0.1-SNAPSHOT'
+    version = project.hasProperty('BUILD_SOURCEVERSION') ?
+            project.property('BUILD_SOURCEVERSION') :
+            System.getenv('BUILD_SOURCEVERSION') ?: '0.0.1-SNAPSHOT'
+
+    // Debug final version
+    println "Final version set to: ${version}"
 }
 
 
@@ -63,9 +68,12 @@ subprojects { Project sub ->
             }
         }
 
+//     to generate build info
         springBoot {
             buildInfo()
+
         }
+//    to get git properties
         gitProperties {
             keys = ['git.branch','git.commit.user.name', 'git.commit.id', 'git.commit.time']
         }
