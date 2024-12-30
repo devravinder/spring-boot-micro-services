@@ -1,9 +1,9 @@
-package com.paravar.web.controllers;
+package com.paravar.bookstore.catalog.web.controllers;
 
-import com.paravar.domain.PagedResult;
-import com.paravar.domain.Product;
-import com.paravar.domain.ProductNotFoundException;
-import com.paravar.domain.ProductService;
+import com.paravar.bookstore.catalog.domain.PagedResult;
+import com.paravar.bookstore.catalog.domain.Product;
+import com.paravar.bookstore.catalog.domain.ProductNotFoundException;
+import com.paravar.bookstore.catalog.domain.ProductService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

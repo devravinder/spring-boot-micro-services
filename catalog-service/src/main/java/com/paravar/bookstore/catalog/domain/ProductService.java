@@ -1,6 +1,6 @@
-package com.paravar.domain;
+package com.paravar.bookstore.catalog.domain;
 
-import com.paravar.ApplicationProperties;
+import com.paravar.bookstore.catalog.ApplicationProperties;
 import java.util.Optional;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;

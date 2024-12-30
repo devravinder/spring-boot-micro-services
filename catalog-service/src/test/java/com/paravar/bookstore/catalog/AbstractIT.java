@@ -1,4 +1,4 @@
-package com.paravar;
+package com.paravar.bookstore.catalog;
 
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 

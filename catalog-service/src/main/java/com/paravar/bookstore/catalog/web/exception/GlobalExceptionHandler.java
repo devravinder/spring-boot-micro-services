@@ -1,6 +1,6 @@
-package com.paravar.web.exception;
+package com.paravar.bookstore.catalog.web.exception;
 
-import com.paravar.domain.ProductNotFoundException;
+import com.paravar.bookstore.catalog.domain.ProductNotFoundException;
 import java.net.URI;
 import java.time.Instant;
 import org.springframework.http.HttpStatus;

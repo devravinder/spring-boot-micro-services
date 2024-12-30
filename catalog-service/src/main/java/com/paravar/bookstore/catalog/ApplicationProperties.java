@@ -1,4 +1,4 @@
-package com.paravar;
+package com.paravar.bookstore.catalog;
 
 import jakarta.validation.constraints.Min;
 import org.springframework.boot.context.properties.ConfigurationProperties;

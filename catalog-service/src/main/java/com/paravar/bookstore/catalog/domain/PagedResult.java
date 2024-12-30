@@ -1,4 +1,4 @@
-package com.paravar.domain;
+package com.paravar.bookstore.catalog.domain;
 
 import java.util.List;
 

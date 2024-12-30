@@ -1,4 +1,4 @@
-package com.paravar.domain;
+package com.paravar.bookstore.catalog.domain;
 
 public class ProductNotFoundException extends RuntimeException {
     public ProductNotFoundException(String message) {

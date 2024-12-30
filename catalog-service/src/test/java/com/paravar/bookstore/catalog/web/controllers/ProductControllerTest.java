@@ -1,12 +1,12 @@
-package com.paravar.web.controllers;
+package com.paravar.bookstore.catalog.web.controllers;
 
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 
-import com.paravar.AbstractIT;
-import com.paravar.domain.Product;
+import com.paravar.bookstore.catalog.AbstractIT;
+import com.paravar.bookstore.catalog.domain.Product;
 import io.restassured.http.ContentType;
 import java.math.BigDecimal;
 import org.junit.jupiter.api.Test;
