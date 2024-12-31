@@ -1,0 +1,5 @@
+1. don't use @Data annotation on Entity... will cause cicular dependency exception
+   instead use @Setters & @Getters
+
+   - this occurs specially when we use embedded entities
+

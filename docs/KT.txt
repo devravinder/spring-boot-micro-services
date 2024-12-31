@@ -1,0 +1,245 @@
+RabbitMQ vs Kafka ( Other Queue System )
+===================================
+RabbitMQ
+    - A producer sends the message to the exchange with a routing key ( binding key ).
+    - Based on the routing key, the exchange sends the message to one or more queues.
+    - A queue can have multiple consumers.
+            - every queue will have a binding key ( like id of the queue )
+            - At any time, only one consumer can consume the message from one queue (for a specific message).
+                 - round-robin algorithm for load distribution
+
+    - Supports multiple exchange types like direct, topic, fanout, and headers for flexible message routing.
+
+                - direct exchange
+                   binding key: simple key string
+                    eg: orders, cancellations
+
+                    Note:- in general, queue name only used as routing key ( for ease of understanding )
+
+                - topic exchange
+                   binding key: pattern string
+                    eg: orders.new.*, orders.*.cancelled
+
+                - fanout exchange
+                   binding key: none
+                     - the message will be sent to all queues bound to the exchange.
+
+
+
+
+    - RabbitMQ follows a push-based delivery mechanism, where messages are pushed to consumers as they become available.
+    - Designed for low-latency and real-time messaging, ideal for transactional use cases.
+    - Messages are typically removed from the queue once acknowledged by the consumer
+           (unless configured otherwise, e.g., with dead-letter exchanges).
+    - Offers acknowledgment, ensuring messages are processed reliably and can be redelivered if a consumer fails.
+
+Kafka
+    - A producer sends the message to a topic.
+    - Each topic is divided into partitions
+           - and each partition is an ordered, immutable sequence of records.
+    - Consumers subscribe to topics and consume messages from partitions.
+    - Within a partition, messages are strictly ordered.
+    - Multiple consumers can read from different partitions of the same topic, enabling parallelism.
+    - Kafka retains messages for a configurable duration, even after they are consumed, allowing message replay.
+    - It uses a pull-based model, where consumers fetch messages from brokers at their own pace.
+    - Designed for high-throughput and scalable systems, ideal for data streaming and event sourcing.
+    - Kafka is well-suited for distributed systems and integrates seamlessly with big data tools like Spark and Hadoop.
+
+
+
+============================= Advanced JPA Mappings & Custom Queries ===================================
+1. Using records as embedded objects(entity)
+    refer: order-service
+            OrderEntity has Customer record as embedded entity
+
+
+2. Override attributes for embedded entity
+   refer: order-service
+               OrderEntity has Customer record as embedded entity
+
+
+3. storing Enums in db ( mapping to db )
+   refer: order-service
+                  OrderEventEntity has OrderEventType as enum
+
+4. non-modifiable attributes
+   refer: order-service
+                  OrderEntity has createdAt
+
+
+4. using custom queries
+
+   - join queries
+       - very useful when need to fetch data form 1:n relationship
+     refer: order-service
+                  OrderRepository has findByUserNameAndOrderNumber
+
+
+   - Selecting only required fields and constructing a new object
+     refer: order-service
+                  OrderRepository has findByUserName
+
+5. OneToMany & ManyToOne
+   refer: order-service
+        OrderEntity & OrderItemEntity
+
+
+    Note:- in OrderEntity & OrderItemEntity case,
+        - we don't do transactions directly on OrderItemEntity using OrderItemEntityRepository
+        - bcz it is as always associated with OrderEntity
+        - so, we do transactions of OrderItemEntity through OrderEntity ( using OrderEntityRepository )
+
+        i.e child entity transactions are done through parent entity ( Aggregated entity )
+
+
+
+============================= Customize The Validation Error Messages ===================================
+1. when we use validation from spring boot validation starter ( jakarta.validation.constraints ),
+   the message may not be in our required format, so we need to customize it
+      - refer: order-service
+             web.exception.GlobalExceptionHandler in this we override the method handleMethodArgumentNotValid
+              ( MethodArgumentNotValidException is the actual exception )
+
+
+
+
+================================ WebLayer Unit Testing ===================================
+1. It is recommend to write Unit tests for web layer...to verify input and output ( input validation, output validation )
+    - without depending on other services ( like order-service )
+
+    - refer: order-service
+             web.controller.OrderControllerUnitTests
+
+
+
+================================ Resiliency with Resilience4j ===================================
+Note:- in our application we implemented : timeout, retry, circuit breaker using Resilience4j
+
+
+1. Timeout ( Time Limit )
+   - if the service is not giving response in time, it will throw a timeout exception
+      - else thread will wait for the response ( resource wasted )
+
+2. Retry ( default 3 times )
+   - if a service is not giving response then retry within the permitted time
+       - there is a chance for success
+       - else handle from our side ( fallback method )
+
+3. Bulkhead
+     why needed?
+       - assume that we have 2 services ( A-service & B-service )
+             - B-service is slow ( gives response in 10 seconds )
+             - A-service is fast ( gives response in 1 second )
+       - we are making  api calls  to  A-service & B-service from C-service
+       - to make requests in parallel, we are using 5 threads
+
+       - from end-user... C-service receiving 10 api calls
+            Case1:- If all the threads are not decided into groups
+                   - there is chance that 5 threads are used for B-service
+                       - they may wait for 10 seconds to get response
+                   - so in 10 seconds, we are serving only 5 requests
+
+
+            Case2:- If we divided the threads into 2 groups ( 3: for A-service & 2: for B-service )
+                   - even if the 3 threads are waiting for response from A-service
+                         - they serve only 3 requests in 10 seconds
+
+                   - but the remaining 2 threads will serve 20 requests in 10 seconds
+
+                   - so Total in 10 seconds, we are serving 23 requests
+
+                   - i.e if some part of app is slow...don't make entire app slow
+                         if one part is not working...don't make entire to collapse
+
+                     ( Bulkhead technic is used in ships...if in some parts of the water is coming,
+                        keep the other parts proper...so that ship won't sink )
+
+
+        - to achieve Case 2 ( Bulkhead ), we are using Resilience4j
+
+
+3. Circuit Breaker
+    - if a service is not giving response for last certain time ( or for the last few requests )
+    - assuming that the service will do the same for next certain time ( or for next few requests )
+    - don't send the request to the service ( open the circuit )
+       - and send response to end client saying try after some time
+       - handle the scenario in different way ...instead of wasting time & resources
+
+       Note:- we opened the circuit...sending response from our side ( short-circuiting )
+
+    - in mean time keep checking the service
+        - by sending few requests to the service
+              - ( for the remaining requests...we will handle with open circuit )
+        - in the regular intervals
+
+    - again once the service up ( giving response )...send all the request to the service ( close the circuit )
+
+       Note:- circuit breaker won't close immediately...until all re-tries are successful
+               - even if partial requests are successful...it'll be in open state ( Half-open state )
+
+               Status:-
+                    OPEN: no more requests are sent to the service
+                    HALF-OPEN: some requests are sent to the service
+                    CLOSED: all requests are sent to the service
+
+
+    i.e when the circuit is open... we circuit the requests form our side
+        - only few are sent to the service for checking
+
+
+Note:- when we apply both retry & circuit breaker...
+      and if we add fallback methods to both...then circuit breaker method will be called first
+
+      ( we can change this order by env variables  )
+
+4. Rate Limiting
+   - if the resource usage is high...limit the incoming requests ( 90% RAM is used )
+   - serve only paid/premium users with unlimited requests
+   - limit less important requests
+
+
+============================== Outbox Pattern ===================================
+Decoupling the message broker transactions
+    - store the events in db & read them on regular intervals...and process them
+
+Why?
+
+1. To decouple the database from the message broker
+
+    - assume we are doing DB transaction & message publish in one transaction
+      - if the message is published...but some exception came & transaction is rolled back
+      - then we can't roll back message publish
+
+         to solve this
+            - we do the DB transaction...
+             if it success...then we'll store the message ( event ) information in db only
+             - so the message consumer will read the messages from db in regular intervals & process them
+             - then later clears from the db
+               But: here also while clearing...the DB transaction may fail...
+                 then the message may get processed again, so
+                    implement the queue... such way it handles the duplicate messages
+
+                    i.e Consumer should be idempotent
+                       ( Should be able to handle the duplicate messages )
+
+
+
+
+
+2. To decouple the message broker from the application
+
+    - if we de couple
+           - core business logic ( instant important ) & message broker transaction ( async transaction )
+
+       then
+         - we can do the core business logic only one time ( multiple times not required )
+
+         - and we can do the async transaction multiple times if required
+            eg: if the order placing service is failed...we can try multiple times
+               using schedule jobs with message brokers
+
+
+  Note:- in our application job schedulers publish the tasks ( see jobs package )
+
+================================== Distributed Locks ===================================
+1. We are using shedlock with JDBC template

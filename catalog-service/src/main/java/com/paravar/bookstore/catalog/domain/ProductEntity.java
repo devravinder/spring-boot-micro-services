@@ -4,12 +4,15 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.math.BigDecimal;
-import lombok.Data;
 
 @Entity
 @Table(name = "products")
-@Data
+@Setter
+@Getter
 class ProductEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "product_id_generator")

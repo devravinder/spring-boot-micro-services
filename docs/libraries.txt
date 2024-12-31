@@ -1,0 +1,46 @@
+Libraries Used
+  - Flyway
+     - for migrations
+
+  - Lombok
+     - for annotations
+
+  - MapStruct
+     - for object mapping
+
+  - RabbitMQ
+     - for messaging ( with outbox pattern )
+
+  - RestAssured
+     - for api testing ( own apis )
+
+  - Swagger
+     - for api documentation
+
+  - Mockito ( part of Spring boot starter )
+     - for mocking
+
+  - JUnit ( part of Spring boot starter )
+     - for unit testing
+
+  - Instancio
+     - for creating test data ( meaning full dummy data )
+
+  - TestContainers
+     - for running containers for testing
+
+
+  - resilience4j
+     - for rate-limit, circuit breaker, retry, bulkhead, timeout
+
+     ( see: spring cloud circuit breaker that does autoconfiguration for resilience4j )
+       - in our app we are directly using resilience4j with spring boot 3 support
+
+
+  - wiremock
+     - for mocking the external apis
+     - we are using wiremock with testcontainers
+
+
+  - shedlock
+     - to manage the lock for scheduling jobs ( distributed locks )

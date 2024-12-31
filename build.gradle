@@ -15,7 +15,7 @@ allprojects {
             System.getenv('BUILD_SOURCEVERSION') ?: '0.0.1-SNAPSHOT'
 
     // Debug final version
-    println "Final version set to: ${version}"
+//    println "Final version set to: ${version}"
 }
 
 

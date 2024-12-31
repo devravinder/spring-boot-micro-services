@@ -10,6 +10,7 @@ vars:
   # see 'sleep' task for one more example
   GOOS: "{{default OS .GOOS}}"
   GRADLEW: '{{if eq .GOOS "windows"}}gradlew.bat{{else}}./gradlew{{end}}'
+  SLEEP_CMD: '{{if eq .GOOS "windows"}}timeout{{else}}sleep{{end}}'
   DC_DIR: "deployment/docker-compose"
   INFRA_DC_FILE: "{{.DC_DIR}}/infra.yaml"
   APPS_DC_FILE: "{{.DC_DIR}}/apps.yaml"
@@ -32,6 +33,7 @@ tasks:
   build:
     cmds:
       - "{{.GRADLEW}} :catalog-service:bootBuildImage -x test -PBUILD_SOURCEVERSION=1.0.0"
+      - "{{.GRADLEW}} :order-service:bootBuildImage -x test -PBUILD_SOURCEVERSION=1.0.0"
 
   start_infra:
     cmds:
@@ -69,4 +71,4 @@ tasks:
     vars:
       DURATION: '{{default 5 .DURATION}}'
     cmds:
-      - sleep {{.DURATION}}
+      - "{{.SLEEP_CMD}} {{.DURATION}}"
