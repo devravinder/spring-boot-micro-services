@@ -44,3 +44,8 @@ Libraries Used
 
   - shedlock
      - to manage the lock for scheduling jobs ( distributed locks )
+
+
+  - java mail sender
+     - for sending emails
+     - mail hog ( fake email server )

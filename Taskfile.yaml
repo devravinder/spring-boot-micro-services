@@ -34,6 +34,7 @@ tasks:
     cmds:
       - "{{.GRADLEW}} :catalog-service:bootBuildImage -x test -PBUILD_SOURCEVERSION=1.0.0"
       - "{{.GRADLEW}} :order-service:bootBuildImage -x test -PBUILD_SOURCEVERSION=1.0.0"
+      - "{{.GRADLEW}} :notification-service:bootBuildImage -x test -PBUILD_SOURCEVERSION=1.0.0"
 
   start_infra:
     cmds:

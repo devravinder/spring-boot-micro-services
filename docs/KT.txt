@@ -221,6 +221,7 @@ Why?
 
                     i.e Consumer should be idempotent
                        ( Should be able to handle the duplicate messages )
+                        - we handle this in notification-service ( maintaining table in DB with event id )
 
 
 
@@ -240,6 +241,7 @@ Why?
 
 
   Note:- in our application job schedulers publish the tasks ( see jobs package )
+
 
 ================================== Distributed Locks ===================================
 1. We are using shedlock with JDBC template
