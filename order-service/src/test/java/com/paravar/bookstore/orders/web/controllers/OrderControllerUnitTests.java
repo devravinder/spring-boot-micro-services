@@ -12,6 +12,7 @@ import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.stream.Stream;
@@ -22,15 +23,11 @@ import static org.junit.jupiter.params.provider.Arguments.arguments;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(OrderController.class)
-/*
-Unit test ( Slice Test ) for OrderController
- - it loads only the OrderController bean
-    - other all dependencies are mocked
-* */
 class OrderControllerUnitTests {
     @Mock
     private OrderService orderService;
@@ -46,17 +43,18 @@ class OrderControllerUnitTests {
 
     @BeforeEach
     void setUp() {
-        // stub for login/security
         given(securityService.getLoginUserName()).willReturn("ravinder");
     }
 
-    @ParameterizedTest(name = "[{index}]-{0}") // custom display name
+    @ParameterizedTest(name = "[{index}]-{0}")
     @MethodSource("createOrderRequestProvider")
+    @WithMockUser
     void shouldReturnBadRequestWhenOrderPayloadIsInvalid(CreateOrderRequest request) throws Exception {
         given(orderService.createOrder(eq("ravinder"), any(CreateOrderRequest.class)))
                 .willReturn(null);
 
         mockMvc.perform(post("/api/orders")
+                        .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isBadRequest());

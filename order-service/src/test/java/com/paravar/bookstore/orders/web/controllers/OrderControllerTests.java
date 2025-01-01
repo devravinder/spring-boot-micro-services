@@ -53,6 +53,7 @@ class OrderControllerTests extends AbstractIT {
                         }
                     """;
             given().contentType(ContentType.JSON)
+                    .header("Authorization", "Bearer " + getToken())
                     .body(payload)
                     .when()
                     .post("/api/orders")
@@ -65,6 +66,7 @@ class OrderControllerTests extends AbstractIT {
         void shouldReturnBadRequestWhenMandatoryDataIsMissing() {
             var payload = TestDataFactory.createOrderRequestWithInvalidCustomer();
             given().contentType(ContentType.JSON)
+                    .header("Authorization", "Bearer " + getToken())
                     .body(payload)
                     .when()
                     .post("/api/orders")
@@ -78,6 +80,7 @@ class OrderControllerTests extends AbstractIT {
         @Test
         void shouldGetOrdersSuccessfully() {
             List<OrderSummary> orderSummaries = given().when()
+                    .header("Authorization", "Bearer " + getToken())
                     .get("/api/orders")
                     .then()
                     .statusCode(200)
@@ -96,6 +99,7 @@ class OrderControllerTests extends AbstractIT {
         @Test
         void shouldGetOrderSuccessfully() {
             given().when()
+                    .header("Authorization", "Bearer " + getToken())
                     .get("/api/orders/{orderNumber}", orderNumber)
                     .then()
                     .statusCode(200)

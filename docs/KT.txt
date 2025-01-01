@@ -245,3 +245,50 @@ Why?
 
 ================================== Distributed Locks ===================================
 1. We are using shedlock with JDBC template
+
+
+
+================================== Keycloak ===================================
+
+1.  create realm in Keycloak
+    - add client with standard flow ( authentication flow )
+         - we added 'Direct access grants ( username & password )' also to use in integration testing
+
+
+2. to export realm from Keycloak container
+
+     1. enter into the container
+        $ docker exec -it <container-id> bash
+
+     2. export realm & users to the directory ( /opt/keycloak/data/export ) within the container
+        $ /opt/keycloak/bin/kc.sh export --dir /opt/keycloak/data/export --realm bookstore --users realm_file
+
+     4. exit from the container
+        $ exit
+
+     3. copy the exported files to the host
+        $ docker cp <container-id>:/opt/keycloak/data/export /home/ravinder/Desktop/data
+
+        Note:-
+           we are doing security config in bookstore-webapp
+           Imp :-  also see SecurityHelper.java to see how to get authenticated user ( client ) details from OAuth2AuthorizedClientService
+              we are using this information to pass the token in headers ( see OrderController.java in webapp )
+
+
+4. for Keycloak integration testing, Spring Boot doesn't provide ServiceConnection by autoconfiguration
+    - we are doing manually ( see: order-service ContainerConfig.java )
+
+
+================================== Security ===================================
+1. in testing we can actually authenticate the user in test container, or
+   we can create SecurityContext ( we created our custom SecurityContext - MockOAuth2UserContextFactory &  WithMockOAuth2User )
+      [ see : in order-service MockOAuth2UserContextFactory.java WithMockOAuth2User.java ]
+
+
+2. for open api docs
+   - enabled security requirements
+       in order service OpenAPI3Configuration.java
+
+        and also in controller level we are enabling with @SecurityRequirement(name = "security_auth")
+             - we can enable only at the method level also
+
