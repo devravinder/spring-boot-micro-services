@@ -1,5 +1,5 @@
 version: "3.8"
-name: 'spring-boot-microservices-course'
+name: 'spring-boot-microservices'
 services:
   catalog-service:
     image: devravinder/bookstore-catalog-service:1.0.0
