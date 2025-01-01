@@ -11,16 +11,26 @@ import java.time.Duration;
 @Configuration
 class CatalogServiceClientConfig {
 
+  /*  @Bean
+    RestClientCustomizer restClientCustomizer(ApplicationProperties properties) {
+        var simpleClientHttpRequestFactory = new SimpleClientHttpRequestFactory();
+        simpleClientHttpRequestFactory.setConnectTimeout(Duration.ofSeconds(5)); // waiting time to establish connection
+        simpleClientHttpRequestFactory.setReadTimeout(Duration.ofSeconds(5));
+        return restClientBuilder -> restClientBuilder
+                .baseUrl(properties.catalogServiceUrl())
+                .requestFactory(simpleClientHttpRequestFactory)
+                .build();
+    }*/
+
     @Bean
-    RestClient restClient(ApplicationProperties properties) {
+    RestClient restClient(RestClient.Builder builder, ApplicationProperties properties) {
 
        var simpleClientHttpRequestFactory = new SimpleClientHttpRequestFactory();
        simpleClientHttpRequestFactory.setConnectTimeout(Duration.ofSeconds(5)); // waiting time to establish connection
        simpleClientHttpRequestFactory.setReadTimeout(Duration.ofSeconds(5));
        // after the connection is established, how long to wait for a response
 
-        return RestClient.builder()
-                .baseUrl(properties.catalogServiceUrl())
+        return builder
                 .requestFactory(simpleClientHttpRequestFactory)
                 .build();
     }

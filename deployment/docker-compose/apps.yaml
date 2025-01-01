@@ -10,6 +10,8 @@ services:
       - DB_USERNAME=postgres
       - DB_PASSWORD=postgres
       - SWAGGER_API_GATEWAY_URL=http://api-gateway:8989/catalog
+      - MANAGEMENT_TRACING_ENABLED=true
+      - MANAGEMENT_ZIPKIN_TRACING_ENDPOINT=http://tempo:9411
     ports:
       - "8081:8081"
     restart: unless-stopped
@@ -20,6 +22,9 @@ services:
       resources:
         limits:
           memory: 700m
+
+    labels:
+      logging: "promtail"
 
 
   order-service:
@@ -36,6 +41,8 @@ services:
       - RABBITMQ_USERNAME=guest
       - RABBITMQ_PASSWORD=guest
       - SWAGGER_API_GATEWAY_URL=http://api-gateway:8989/orders
+      - MANAGEMENT_TRACING_ENABLED=true
+      - MANAGEMENT_ZIPKIN_TRACING_ENDPOINT=http://tempo:9411
     ports:
       - "8082:8082"
     restart: unless-stopped
@@ -48,6 +55,9 @@ services:
       resources:
         limits:
           memory: 700m
+
+    labels:
+      logging: "promtail"
 
 
   notification-service:
@@ -64,6 +74,8 @@ services:
       - RABBITMQ_PASSWORD=guest
       - MAIL_HOST=mailhog
       - MAIL_PORT=1025
+      - MANAGEMENT_TRACING_ENABLED=true
+      - MANAGEMENT_ZIPKIN_TRACING_ENDPOINT=http://tempo:9411
     ports:
       - "8083:8083"
     restart: unless-stopped
@@ -78,6 +90,8 @@ services:
       resources:
         limits:
           memory: 700m
+    labels:
+      logging: "promtail"
 
   api-gateway:
     image: devravinder/bookstore-api-gateway:1.0.0
@@ -86,6 +100,8 @@ services:
       - SPRING_PROFILES_ACTIVE=docker
       - CATALOG_SERVICE_URL=http://catalog-service:8081
       - ORDER_SERVICE_URL=http://order-service:8082
+      - MANAGEMENT_TRACING_ENABLED=true
+      - MANAGEMENT_ZIPKIN_TRACING_ENDPOINT=http://tempo:9411
     ports:
       - "8989:8989"
     restart: unless-stopped
@@ -93,6 +109,9 @@ services:
       resources:
         limits:
           memory: 700m
+
+    labels:
+      logging: "promtail"
 
 
   bookstore-webapp:
@@ -102,6 +121,8 @@ services:
       - SPRING_PROFILES_ACTIVE=docker
       - BOOKSTORE_API_GATEWAY_URL=http://api-gateway:8989
       - OAUTH2_SERVER_URL=http://keycloak:9191
+      - MANAGEMENT_TRACING_ENABLED=true
+      - MANAGEMENT_ZIPKIN_TRACING_ENDPOINT=http://tempo:9411
     ports:
       - "8080:8080"
     restart: unless-stopped
@@ -109,3 +130,5 @@ services:
       resources:
         limits:
           memory: 700m
+    labels:
+      logging: "promtail"

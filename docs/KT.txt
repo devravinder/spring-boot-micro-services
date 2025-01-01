@@ -1,3 +1,22 @@
+
+=================================== Running the services ====================================
+
+1. to run all the services in docker with docker compose
+   $ task start   // to start
+   $ task stop    // ro stop
+
+2. to run infra structure in docker & but apps in host system
+   $ task start_infra // to start infra structure
+   $ task stop_infra  // to stop infra structure
+
+   Note:- after starting infra structure...run the apps in host system ( using intellij idea  or jar )
+
+
+3. to monitor
+   $ task start_monitoring
+   $ task stop_monitoring
+
+=================================================== Messaging Queues ====================================
 RabbitMQ vs Kafka ( Other Queue System )
 ===================================
 RabbitMQ
@@ -291,4 +310,86 @@ Why?
 
         and also in controller level we are enabling with @SecurityRequirement(name = "security_auth")
              - we can enable only at the method level also
+
+
+
+================================== Observability ===================================
+
+see: app.yaml & monitoring.yaml ( prometheus, promtail, tempo )
+
+1. Actuator provides all the metrics ( we should enable )
+  - any metrics collector ( scrapping ) service can register with actuator using 'micrometer-registry'
+
+2. Prometheus:- for metrics
+      We integrated Prometheus with Actuator using micrometer-registry
+        - this will collect all the metrics from all the services
+
+
+
+3. loki:- we are using loki to see logs ( centralized logging service )
+
+4. promptail:- we are using promptail to collects the logs & to push to centralized logging service
+           - dokcer stores all the container logs in one centalized location
+           - we added label in each service ( label is 'promtail', see apps.yaml)
+           - only that label logs are collected by promptail ( see promtail-docker-config.yaml )
+           - and push to centralized logging service that is loki
+
+           Note:- in Docker all logs are stored the centralized
+                    in place that is /var/lib/docker/containers ( this we are mapping to promtail )
+                    and also we mounted docker socket to promtail container
+
+
+4.   Grafana:- we are using grafana to see/visualize metrics
+                 Visit the Grafana UI at http://localhost:3000
+                 and add new connections / data source ( give docker-compose host url - service name )
+                     - add Prometheus, Loki, Tempo ( for port number see monitoring.yaml )
+
+                 - to see goto explore tab in grafana
+
+                 - we can create dashboards using pre-built dashboards
+
+
+5. Tempo:- we are using tempo to see traces ( centralized/distributed tracing service )
+
+
+6. opentelemetry-exporter-zipkin:
+    - this exports the traces to centralized tracing service ...that is tempo
+
+7. micrometer-tracing-bridge:
+     - this enables to trace collecting service to integrate with our application
+         - it like a micrometer-registry for tracing
+
+     - this is being used by opentelemetry-exporter-zipkin to publish the traces to centralized tracing service
+
+
+Note:-
+   - micrometer-registry is gives metrics to any metrics collector  ( Prometheus in our app )
+   - micrometer-tracing-bridge is gives traces to any tracing collector ( opentelemetry-exporter-zipkin in our app )
+        - further opentelemetry-exporter-zipkin pushes the traces to tempo ( centralized/distributed tracing service )
+   - promptail is collecting logs & pushing to loki ( cetralized logging service )
+
+
+    ----
+
+    Grafana : to visualize
+        - Tempo : for distributed tracing
+        - Loki : for centralized logging
+        - Prometheus : for metrics ( for individual services )
+
+Note:- for distributed tracing to work properly...we should create Rest Client using RestClient.Builder
+       see bookstore webb app ClientsConfig
+
+
+     - to see traces in grafana
+       - get the trace id from the log ( loki )
+              - log id will contain the trace id & span id
+
+                trace vs span
+                - whole process is trace
+                - individual service is span
+
+       - using this trace id we can see the trace in Tempo
+
+
+
 

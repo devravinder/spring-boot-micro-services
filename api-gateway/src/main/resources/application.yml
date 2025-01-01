@@ -12,6 +12,16 @@ management:
     web:
       exposure:
         include: "*"
+
+  metrics:
+    tags:
+      application: ${spring.application.name}
+  tracing:
+    enabled: false
+    sampling:
+      probability: 1.0
+
+
 spring:
   application:
     name: api-gateway

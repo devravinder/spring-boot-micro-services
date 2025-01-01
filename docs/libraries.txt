@@ -53,3 +53,9 @@ Libraries Used
 
   - keycloak
      - for oauth2 authorization server
+
+
+  - observability ( with micrometer )
+      - prometheus - metrics scrapping - ( we registered this with actuator  for metrics)
+      - loki - for logging
+      - promtail - to push the logs to centralized logging service

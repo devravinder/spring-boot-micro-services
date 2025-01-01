@@ -3,6 +3,8 @@ package com.paravar.bookstore.webapp.web.controllers;
 import com.paravar.bookstore.webapp.clients.orders.*;
 import com.paravar.bookstore.webapp.services.SecurityHelper;
 import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +14,7 @@ import java.util.Map;
 
 @Controller
 class OrderController {
+    private static final Logger log = LoggerFactory.getLogger(OrderController.class);
     private final OrderServiceClient orderServiceClient;
     private final SecurityHelper securityHelper;
 
@@ -28,6 +31,7 @@ class OrderController {
     @PostMapping("/api/orders")
     @ResponseBody
     OrderConfirmationDTO createOrder(@Valid @RequestBody CreateOrderRequest orderRequest) {
+        log.info("Creating order: {}", orderRequest);
         return orderServiceClient.createOrder(getHeaders(), orderRequest);
     }
 
@@ -40,6 +44,7 @@ class OrderController {
     @GetMapping("/api/orders/{orderNumber}")
     @ResponseBody
     OrderDTO getOrder(@PathVariable String orderNumber) {
+        log.info("Fetching order details for orderNumber: {}", orderNumber);
         return orderServiceClient.getOrder(getHeaders(), orderNumber);
     }
 
@@ -51,6 +56,7 @@ class OrderController {
     @GetMapping("/api/orders")
     @ResponseBody
     List<OrderSummary> getOrders() {
+        log.info("Fetching orders");
         return orderServiceClient.getOrders(getHeaders());
     }
 

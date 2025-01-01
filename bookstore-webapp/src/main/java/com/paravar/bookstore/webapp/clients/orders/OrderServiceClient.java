@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Map;
 
 public interface OrderServiceClient {
-
     @PostExchange("/orders/api/orders")
     OrderConfirmationDTO createOrder(
             @RequestHeader Map<String, ?> headers, @RequestBody CreateOrderRequest orderRequest);
