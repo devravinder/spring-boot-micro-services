@@ -3,7 +3,6 @@ package com.paravar.bookstore.webapp.clients.orders;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-
 import java.io.Serializable;
 import java.math.BigDecimal;
 

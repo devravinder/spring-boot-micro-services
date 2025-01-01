@@ -1,7 +1,6 @@
 package com.paravar.bookstore.webapp.clients.catalog;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.List;
 
 public record PagedResult<T>(

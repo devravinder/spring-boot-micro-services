@@ -1,14 +1,13 @@
 package com.paravar.bookstore.orders.jobs;
 
 import com.paravar.bookstore.orders.domain.OrderService;
+import java.time.Instant;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.javacrumbs.shedlock.core.LockAssert;
 import net.javacrumbs.shedlock.spring.annotation.SchedulerLock;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-
-import java.time.Instant;
 
 @Component
 @Slf4j

@@ -1,7 +1,6 @@
 package com.paravar.bookstore.webapp.clients.orders;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.math.BigDecimal;
 import java.util.Set;
 

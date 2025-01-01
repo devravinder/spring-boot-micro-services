@@ -1,6 +1,10 @@
 package com.paravar.bookstore.gateway;
 
-import jakarta.annotation.PostConstruct;
+import static org.springdoc.core.utils.Constants.DEFAULT_API_DOCS_URL;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import org.springdoc.core.properties.AbstractSwaggerUiConfigProperties;
 import org.springdoc.core.properties.SwaggerUiConfigProperties;
 import org.springframework.cloud.gateway.route.RouteDefinition;
@@ -8,13 +12,6 @@ import org.springframework.cloud.gateway.route.RouteDefinitionLocator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
-
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import static org.springdoc.core.utils.Constants.DEFAULT_API_DOCS_URL;
-
 
 @Configuration
 class SwaggerConfig {
@@ -28,17 +25,14 @@ class SwaggerConfig {
          in this we are dynamically adding child services open api urls to gateway
         * */
 
-
         SwaggerUiConfigProperties properties = new SwaggerUiConfigProperties();
 
         Set<AbstractSwaggerUiConfigProperties.SwaggerUrl> urls = new HashSet<>();
 
-        List<RouteDefinition> definitions = locator
-                .getRouteDefinitions()
-                .collectList()
-                .block();
+        List<RouteDefinition> definitions =
+                locator.getRouteDefinitions().collectList().block();
 
-        if(null != definitions){
+        if (null != definitions) {
             definitions.stream()
                     // reading all route ids ...that ends with -service ( see application.yml )
                     // except openapi
@@ -47,7 +41,6 @@ class SwaggerConfig {
                         // remove -service
                         // then orders-service -> orders
                         String name = routeDefinition.getId().replaceAll("-service", "");
-
 
                         // adding swagger urls dynamically
                         /*
@@ -66,5 +59,4 @@ class SwaggerConfig {
 
         return properties;
     }
-
 }

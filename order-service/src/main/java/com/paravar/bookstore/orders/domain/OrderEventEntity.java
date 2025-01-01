@@ -2,10 +2,9 @@ package com.paravar.bookstore.orders.domain;
 
 import com.paravar.bookstore.orders.domain.models.OrderEventType;
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "order_events")
@@ -34,5 +33,4 @@ class OrderEventEntity {
 
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
-
 }

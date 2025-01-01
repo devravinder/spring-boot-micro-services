@@ -1,11 +1,9 @@
 package com.paravar.bookstore.orders.domain;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import java.math.BigDecimal;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.math.BigDecimal;
 
 @Entity
 @Table(name = "order_items")
@@ -32,5 +30,4 @@ class OrderItemEntity {
     @ManyToOne(optional = false)
     @JoinColumn(name = "order_id")
     private OrderEntity order;
-
 }

@@ -1,7 +1,6 @@
 package com.paravar.bookstore.notifications.domain;
 
 import jakarta.persistence.*;
-
 import java.time.LocalDateTime;
 
 @Entity

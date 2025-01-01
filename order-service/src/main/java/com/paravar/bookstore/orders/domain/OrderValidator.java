@@ -4,11 +4,10 @@ import com.paravar.bookstore.orders.clients.catalog.Product;
 import com.paravar.bookstore.orders.clients.catalog.ProductServiceClient;
 import com.paravar.bookstore.orders.domain.models.CreateOrderRequest;
 import com.paravar.bookstore.orders.domain.models.OrderItem;
+import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-
-import java.util.Set;
 
 @Component
 @Slf4j

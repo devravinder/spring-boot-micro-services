@@ -2,7 +2,6 @@ package com.paravar.bookstore.webapp.clients.orders;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
-
 import java.io.Serializable;
 import java.util.Set;
 

@@ -1,11 +1,11 @@
 package com.paravar.bookstore.orders.web.controllers;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import com.paravar.bookstore.orders.AbstractIT;
 import com.paravar.bookstore.orders.WithMockOAuth2User;
 import org.junit.jupiter.api.Test;
-
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 class GetOrdersTests extends AbstractIT {
 

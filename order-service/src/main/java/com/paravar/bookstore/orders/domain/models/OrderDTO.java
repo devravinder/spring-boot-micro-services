@@ -1,7 +1,6 @@
 package com.paravar.bookstore.orders.domain.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Set;

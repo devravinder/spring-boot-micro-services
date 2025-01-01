@@ -1,8 +1,13 @@
 package com.paravar.bookstore.orders;
 
+import static com.github.tomakehurst.wiremock.client.WireMock.*;
+import static java.util.Collections.singletonList;
+import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import io.restassured.RestAssured;
+import java.math.BigDecimal;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.keycloak.OAuth2Constants;
@@ -22,12 +27,6 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.wiremock.integrations.testcontainers.WireMockContainer;
-
-import java.math.BigDecimal;
-
-import static com.github.tomakehurst.wiremock.client.WireMock.*;
-import static java.util.Collections.singletonList;
-import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
 @SpringBootTest(webEnvironment = RANDOM_PORT)
 @Import(ContainersConfig.class)

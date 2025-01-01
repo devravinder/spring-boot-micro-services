@@ -1,21 +1,20 @@
 package com.paravar.bookstore.notifications.events;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.paravar.bookstore.notifications.AbstractIT;
-import com.paravar.bookstore.notifications.ApplicationProperties;
-import com.paravar.bookstore.notifications.domain.models.*;
-import org.junit.jupiter.api.Test;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.time.LocalDateTime;
-import java.util.Set;
-import java.util.UUID;
-
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.awaitility.Awaitility.await;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.paravar.bookstore.notifications.AbstractIT;
+import com.paravar.bookstore.notifications.ApplicationProperties;
+import com.paravar.bookstore.notifications.domain.models.*;
+import java.time.LocalDateTime;
+import java.util.Set;
+import java.util.UUID;
+import org.junit.jupiter.api.Test;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
 
 class OrderEventHandlerTests extends AbstractIT {
     @Autowired

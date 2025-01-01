@@ -3,6 +3,7 @@ package com.paravar.bookstore.webapp.clients;
 import com.paravar.bookstore.webapp.ApplicationProperties;
 import com.paravar.bookstore.webapp.clients.catalog.CatalogServiceClient;
 import com.paravar.bookstore.webapp.clients.orders.OrderServiceClient;
+import java.time.Duration;
 import org.springframework.boot.web.client.RestClientCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,8 +11,6 @@ import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.support.RestClientAdapter;
 import org.springframework.web.service.invoker.HttpServiceProxyFactory;
-
-import java.time.Duration;
 
 @Configuration
 class ClientsConfig {
@@ -29,7 +28,7 @@ class ClientsConfig {
         return restClientBuilder -> restClientBuilder
                 .baseUrl(properties.apiGatewayUrl())
                 .requestFactory(simpleClientHttpRequestFactory)
-                //.requestFactory(ClientHttpRequestFactories.get(ClientHttpRequestFactorySettings.DEFAULTS
+                // .requestFactory(ClientHttpRequestFactories.get(ClientHttpRequestFactorySettings.DEFAULTS
                 .build();
     }
 

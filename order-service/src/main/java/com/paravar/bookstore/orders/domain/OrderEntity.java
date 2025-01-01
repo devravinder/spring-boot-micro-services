@@ -4,12 +4,11 @@ import com.paravar.bookstore.orders.domain.models.Address;
 import com.paravar.bookstore.orders.domain.models.Customer;
 import com.paravar.bookstore.orders.domain.models.OrderStatus;
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
+import java.util.Set;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.time.LocalDateTime;
-import java.util.Set;
 
 @Entity
 @Table(name = "orders")
@@ -63,5 +62,4 @@ class OrderEntity {
 
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
-
 }

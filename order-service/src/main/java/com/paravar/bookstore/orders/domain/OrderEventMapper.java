@@ -1,7 +1,6 @@
 package com.paravar.bookstore.orders.domain;
 
 import com.paravar.bookstore.orders.domain.models.*;
-
 import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.UUID;
