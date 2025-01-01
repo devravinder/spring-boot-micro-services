@@ -3,4 +3,5 @@ include 'catalog-service'
 include 'order-service'
 include 'notification-service'
 include 'api-gateway'
+include 'bookstore-webapp'
 

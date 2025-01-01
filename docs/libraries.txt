@@ -49,3 +49,7 @@ Libraries Used
   - java mail sender
      - for sending emails
      - mail hog ( fake email server )
+
+
+  - keycloak
+     - for oauth2 authorization server

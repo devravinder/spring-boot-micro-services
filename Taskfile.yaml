@@ -36,6 +36,8 @@ tasks:
       - "{{.GRADLEW}} :order-service:bootBuildImage -x test -PBUILD_SOURCEVERSION=1.0.0"
       - "{{.GRADLEW}} :notification-service:bootBuildImage -x test -PBUILD_SOURCEVERSION=1.0.0"
       - "{{.GRADLEW}} :api-gateway:bootBuildImage -x test -PBUILD_SOURCEVERSION=1.0.0"
+      - "{{.GRADLEW}} :bookstore-webapp:bootBuildImage -x test -PBUILD_SOURCEVERSION=1.0.0"
+
 
   start_infra:
     cmds:
