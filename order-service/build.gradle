@@ -49,12 +49,8 @@ dependencies {
     testImplementation 'org.wiremock:wiremock-standalone:3.10.0'
     testImplementation 'org.wiremock.integrations.testcontainers:wiremock-testcontainers-module:1.0-alpha-14'
 
-
-
     // Spring Configuration Processor
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
-
-
 
     // dev
     developmentOnly 'org.springframework.boot:spring-boot-devtools'

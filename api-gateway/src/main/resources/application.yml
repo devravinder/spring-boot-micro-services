@@ -1,0 +1,74 @@
+server:
+  port: 8989
+  shutdown: graceful
+
+logging:
+  level:
+    org.springframework.cloud.gateway: TRACE
+    reactor.netty: DEBUG
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowed-origins: "*"
+            allowed-methods: "*"
+            allowed-headers: "*"
+            allow-credentials: false
+      routes:
+        - id: catalog-service
+          uri: ${CATALOG_SERVICE_URL:http://localhost:8081}
+          predicates:
+            - Path=/catalog/**
+          filters:
+            - RewritePath=/catalog/?(?<segment>.*), /${segment}
+#           eg: /catalog/api/products -> /api/products
+        - id: orders-service
+          uri: ${ORDER_SERVICE_URL:http://localhost:8082}
+          predicates:
+            - Path=/orders/**
+          filters:
+            - RewritePath=/orders/?(?<segment>.*), /${segment}
+
+
+          # this is for combing all the api-docs
+          #  custom-info-1
+        - id: openapi
+          uri: http://localhost:${server.port}
+          predicates:
+            - Path=/v3/api-docs/**
+          filters:
+            - RewritePath=/v3/api-docs/?(?<segment>.*), /${segment}/v3/api-docs
+
+  mvc:
+      problemdetails:
+        enabled: true
+
+
+#  custom-info-3
+#springdoc:
+#  api-docs:
+#    enabled: true
+#  swagger-ui:
+#    use-root-path: true # /swagger-ui/index.html
+#    path: /swagger-ui.html
+#    urls:
+#      - name: catalog
+#        url: catalog/v3/api-docs
+#      - name: orders
+#        url: orders/v3/api-docs
+
+
+

@@ -1,0 +1,48 @@
+1. in open api we're dynamically adding the swagger urls
+    with the help of
+         custom-info-1 ( application.yaml ) & custom-info-2 (SwaggerConfig.java) code snippets
+    see: SwaggerConfig.java
+
+    Note:- to enable autoconfiguration
+        comment out the custom-info-1 & custom-info-2 code snippets
+        uncomment the custom-info-3 code snippet ( in application.yaml )
+
+
+
+2. We are doing custom configuration
+   so that the routes that are defined under 'routes' in application.yaml
+      will be added to swagger documentation ( ui )
+
+
+   else we have to add statically  in application.yaml
+     under  'swagger-ui.urls'
+          with service name & url
+
+
+
+ i.e we are doing custom configuration to eliminate statically adding open api urls to swagger
+
+
+
+3. If we are running all the services in docker with docker compose
+   then there will be an issue...in calling apis from the api-gateway UI
+     - bcz
+         the service  url points docker service name ( host name )
+         eg: http://order-service:8082/api/orders
+
+
+   to fix this,
+      we need to map all the service names to localhost (in /etc/hosts )
+
+      like
+      127.0.0.1 order-service
+      127.0.0.1 catalog-service
+      127.0.0.1 notification-service
+
+
+After combing all the services open api urls in api-gateway,
+   still when we try t
+
+
+
+
