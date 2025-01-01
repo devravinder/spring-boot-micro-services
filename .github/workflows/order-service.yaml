@@ -5,9 +5,9 @@ on:
     paths:
       - order-service/**
     branches:
-      - 'main'
+      - 'master'
   pull_request:
-    branches: [ main ]
+    branches: [ master ]
 
 jobs:
   build:
